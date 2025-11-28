@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APOLO - Gerador de Sensibilidade</title>
+<style>
+    body {
+        background: linear-gradient(135deg, #1a002b, #3b0066);
+        color: white;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 20px;
+        overflow-x: hidden;
+        animation: fadeBg 6s infinite alternate;
+    }
+
+    @keyframes fadeBg {
+        from { filter: brightness(0.9); }
+        to { filter: brightness(1.2); }
+    }
+
+    h1 {
+        font-size: 36px;
+        text-shadow: 0 0 20px #a200ff;
+        animation: glow 2s infinite;
+    }
+
+    @keyframes glow {
+        0%,100% { text-shadow: 0 0 20px #a200ff; }
+        50% { text-shadow: 0 0 35px #ff00ff; }
+    }
+
+    .menu {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .menu button {
+        padding: 10px 18px;
+        background: #8d00ff;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 0 15px #a200ff;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .menu button:hover {
+        background: #c100ff;
+        transform: scale(1.1);
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.08);
+        border: 2px solid #a200ff;
+        border-radius: 25px;
+        padding: 25px;
+        width: 90%;
+        max-width: 450px;
+        margin: auto;
+        box-shadow: 0 0 25px #a200ff;
+        animation: fadeIn 1.2s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .sliderBox { margin-top: 25px; text-align: left; }
+
+    input[type=range] {
+        width: 100%;
+        height: 6px;
+        background: #ffffff33;
+        border-radius: 6px;
+        outline: none;
+        -webkit-appearance: none;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 22px;
+        height: 22px;
+        background: #ff00ff;
+        border-radius: 50%;
+        box-shadow: 0 0 12px #ff00ff;
+        transition: 0.2s;
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover {
+        transform: scale(1.3);
+    }
+
+    .btn {
+        margin-top: 25px;
+        background: #a200ff;
+        padding: 14px;
+        border-radius: 15px;
+        font-size: 20px;
+        width: 100%;
+        border: none;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 0 0 20px #a200ff;
+    }
+
+    .btn:hover {
+        background: #d000ff;
+        transform: scale(1.07);
+    }
+
+    #resultado {
+        margin-top: 20px;
+        font-size: 22px;
+        padding: 15px;
+        background: rgba(255,255,255,0.12);
+        border-radius: 12px;
+        display: none;
+        box-shadow: 0 0 20px #d000ff;
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0%,100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+</style>
+</head>
+<body>
+
+<h1>APOLO - Gerador de Sensibilidade</h1>
+
+<div class="menu">
+    <button onclick="mostrar('home')">Início</button>
+    <button onclick="mostrar('sensi')">Gerador</button>
+    <button onclick="mostrar('creditos')">Créditos</button>
+</div>
+
+<div id="home" class="card">
+    <h2>Bem-vindo ao APOLO</h2>
+    <p>Gerador avançado com efeitos neon, animações e sliders dinâmicos.</p>
+</div>
+
+<div id="sensi" class="card" style="display:none;">
+    <h2>Sensibilidade Personalizada</h2>
+
+    <div class="presetBtns" style="display:flex; gap:10px; margin-bottom:20px;">
+        <button class="btn" style="padding:10px; font-size:14px;" onclick="preset('pro')">Pro Player</button>
+        <button class="btn" style="padding:10px; font-size:14px;" onclick="preset('rapida')">Rápida</button>
+        <button class="btn" style="padding:10px; font-size:14px;" onclick="preset('controle')">Controle</button>
+    </div>
+
+    <div class="sliderBox">
+        <label>Geral: <span id="v1">50</span></label>
+        <input type="range" id="s1" min="0" max="100" value="50" oninput="v1.innerHTML = this.value; salvarTemp();">
+    </div>
+
+    <div class="sliderBox">
+        <label>Red Dot: <span id="v2">50</span></label>
+        <input type="range" id="s2" min="0" max="100" value="50" oninput="v2.innerHTML = this.value; salvarTemp();">
+    </div>
+
+    <div class="sliderBox">
+        <label>2X Scope: <span id="v3">50</span></label>
+        <input type="range" id="s3" min="0" max="100" value="50" oninput="v3.innerHTML = this.value; salvarTemp();">
+    </div>
+
+    <div class="sliderBox">
+        <label>4X Scope: <span id="v4">50</span></label>
+        <input type="range" id="s4" min="0" max="100" value="50" oninput="v4.innerHTML = this.value; salvarTemp();">
+    </div>
+
+    <div class="sliderBox">
+        <label>AWM: <span id="v5">50</span></label>
+        <input type="range" id="s5" min="0" max="100" value="50" oninput="v5.innerHTML = this.value; salvarTemp();">
+    </div>
+
+    <button class="btn" onclick="gerar()">Gerar Sensibilidade</button>
+
+    <button class="btn" style="background:#5500ff; margin-top:15px;" onclick="salvarFavorita()">Salvar como Favorita ⭐</button>
+    <button class="btn" style="background:#0044ff; margin-top:10px;" onclick="carregarFavorita()">Carregar Favorita 📂</button>
+
+    <div id="resultado"></div>"></div>
+</div>
+
+<div id="creditos" class="card" style="display:none;">
+    <h2>Créditos</h2>
+    <p>Desenvolvido especialmente para o projeto APOLO.</p>
+</div>
+
+<script>
+function mostrar(id) {
+    document.getElementById("home").style.display = "none";
+    document.getElementById("sensi").style.display = "none";
+    document.getElementById("creditos").style.display = "none";
+    document.getElementById(id).style.display = "block";
+}
+
+function gerar() {
+    let g1 = s1.value;
+    let g2 = s2.value;
+    let g3 = s3.value;
+    let g4 = s4.value;
+    let g5 = s5.value;
+
+    let res = document.getElementById("resultado");
+    res.style.display = "block";
+
+    res.innerHTML = `🎯 <b>Sensibilidade Gerada:</b><br><br>
+        Geral: ${g1}%<br>
+        Red Dot: ${g2}%<br>
+        2X: ${g3}%<br>
+        4X: ${g4}%<br>
+        AWM: ${g5}%<br><br>
+        🔥 <b>Use essa sensi no Free Fire!</b>`;
+}
+function preset(tipo) {
+    let valores = {
+        pro:   [95, 92, 88, 90, 100],
+        rapida:[100, 100, 95, 98, 100],
+        controle:[70, 65, 60, 58, 55]
+    }[tipo];
+
+    s1.value = valores[0]; v1.innerHTML = valores[0];
+    s2.value = valores[1]; v2.innerHTML = valores[1];
+    s3.value = valores[2]; v3.innerHTML = valores[2];
+    s4.value = valores[3]; v4.innerHTML = valores[3];
+    s5.value = valores[4]; v5.innerHTML = valores[4];
+
+    gerar();
+}
+function detectarDPI() {
+    let dpi = window.devicePixelRatio * 160;
+    if (dpi > 500) preset('pro');
+    else if (dpi > 300) preset('rapida');
+    else preset('controle');
+}
+
+document.addEventListener('DOMContentLoaded', detectarDPI);
+
+let audioClick = new Audio('https://cdn.pixabay.com/audio/2022/03/15/audio_futuristic.mp3');
+
+function playSound() {
+    audioClick.currentTime = 0;
+    audioClick.play();
+}
+
+document.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', playSound);
+});
+
+</script>
+
+</body>
+</html>
+
